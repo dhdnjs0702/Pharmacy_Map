@@ -27,14 +27,15 @@ export default function KakaoMap() {
     if (!container) return;
 
     const options = {
-      center: new window.kakao.maps.LatLng(37.5665, 126.9780),
-      level: 3,
+      center: new window.kakao.maps.LatLng(37.5326, 126.9903), //중심 좌표(용산 구청으로 했습니다)
+      level: 3, //지도  확대 레벨
     };
 
     const map = new window.kakao.maps.Map(container, options);
 
+    //중심 좌표에 마커 추가 예시
     new window.kakao.maps.Marker({
-      position: new window.kakao.maps.LatLng(37.5665, 126.9780),
+      position: new window.kakao.maps.LatLng(37.5326, 126.9903),
       map,
     });
   }, [loaded]);
