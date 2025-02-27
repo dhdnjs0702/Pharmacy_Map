@@ -61,43 +61,45 @@ const CompSearchBar = () => {
             ))}
           </select>
         </div>
-
-        {/* 현재 위치로 검색 버튼 */}
+        +  {/* "현재 위치로 검색" 버튼 추가 */}
         <button
           type="button"
           onClick={handleCurrentLocationSearch}
-          className="border border-gray-300 rounded-md px-3 py-2 bg-white text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="border border-gray-300 rounded-md px-3 py-2 bg-white text-gray-700
+          hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500"
         >
           현재 위치로 검색
         </button>
-      </div>
 
-      {/* 약국 검색 인풋 */}
-      <div className="flex flex-1 relative w-full sm:w-64">
-        <input
-          type="text"
-          placeholder="약국 검색"
-          value={searchWord}
-          onChange={(e) => setSearchWord(e.target.value)}
-          className="w-full border border-gray-300 rounded-md px-3 py-2 pr-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-        />
-        {/* 돋보기 아이콘 */}
-        <svg
-          onClick={handleSubmit}
-          className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M21 21l-4.35-4.35m0 0a7 7 0 1111.1-11.1 7 7 0 01-11.1 11.1z"
+      </div>
+      {/* 약국 검색 인풋 (가운데 정렬) */}
+      <div className="flex justify-center">
+        <div className="relative w-64">
+          <input
+            type="text"
+            placeholder="약국 검색"
+            value={searchWord}
+            onChange={(e) => setSearchWord(e.target.value)}
+            className="w-full border border-gray-300 rounded-md px-3 py-2 pr-10
+                focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
           />
-        </svg>
+          <svg
+            onClick={handleSubmit}
+            className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform
+                -translate-y-1/2 cursor-pointer"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 21l-4.35-4.35m0 0a7 7 0 1111.1-11.1 7 7 0 01-11.1 11.1z"
+            />
+          </svg>
+        </div>
       </div>
-
     </form>
   );
 };
