@@ -5,7 +5,8 @@ import LoginPage from "./pages/LoginPage";
 import MyPage from "./pages/MyPage";
 import SearchResults from "./pages/SearchResults";
 import DetailPage from "./pages/DetailPage";
-
+import KakaoMap from "./pages/KakaoMap";
+import AdminPage from "./pages/AdminPage";
 const App = () => {
   return (
     <BrowserRouter>
@@ -16,6 +17,8 @@ const App = () => {
         <Route path={"/mypage"} element={<MyPage />} />
         <Route path={"/searchresults"} element={<SearchResults />} />
         <Route path={"/detailpage"} element={<DetailPage />} />
+        <Route path={"/test"} element={<KakaoMap />} />
+        <Route path={"/admin"} element={<AdminPage />} />
       </Routes>
     </BrowserRouter>
   );
