@@ -33,12 +33,17 @@ export default function KakaoMap() {
 
     const map = new window.kakao.maps.Map(container, options);
 
+    // const imageSrc = ""
+    // const image
+
     //중심 좌표에 마커 추가 예시
     new window.kakao.maps.Marker({
       position: new window.kakao.maps.LatLng(37.5326, 126.9903),
       map,
-    });
+    })
+    
   }, [loaded]);
+  
 
   return <div id="map" style={{ width: "100%", height: "500px" }} />;
 }
