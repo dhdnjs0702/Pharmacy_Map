@@ -1,22 +1,29 @@
-import { Map } from "react-kakao-maps-sdk";
+import Supabase from "../supabase/client";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const DetailPage = () => {
-  //searchResults에서 props로 data를 가져와서 객체 접근 되겠습니다.
+  const { pharm_id } = useParams();
+  const [pharmacy, setParmacy] = useState(null);
+
+  useEffect(() => {
+    Supabase
+      .from("pharmacys")
+      .select("*")
+      .eq("pharm_id", pharm_id)
+      .single()
+      .then(({data}) => setParmacy(data));
+  }, [pharm_id]);
+
+  if (!pharmacy) return <p>정보 없음</p>
 
   return (
-    <Map // 지도를 표시할 Container
-      center={{
-        // 지도의 중심좌표
-        lat: 33.450701,
-        lng: 126.570667,
-      }}
-      style={{
-        // 지도의 크기
-        width: "100%",
-        height: "450px",
-      }}
-      level={3} // 지도의 확대 레벨
-    />
+    <div>
+      <img src={pharmacy.pharm_image} alt={pharmacy.pharm_name} width="100%" />
+      <h2>{pharmacy.pharm_name}</h2>
+      <p>주소: {pharmacy.pharm_address}</p>
+      <p>전화번호: {pharmacy.pharm_number}</p>
+    </div>
   );
 };
 //카카오맵 예제입니다
