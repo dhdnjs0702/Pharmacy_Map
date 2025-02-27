@@ -1,8 +1,14 @@
 import React from 'react'
+import CompNavBar from '../common/CompNavBar'
+
+
 
 const SearchResults = () => {
   return (
-    <div>SearchResults</div>
+    <div>
+      <CompNavBar />
+      
+    </div>
   )
 }
 
