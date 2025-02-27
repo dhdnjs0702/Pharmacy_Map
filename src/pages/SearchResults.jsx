@@ -1,8 +1,10 @@
-import React from 'react'
+import KakaoMap from "../components/KakaoMap"
 
 const SearchResults = () => {
   return (
-    <div>SearchResults</div>
+    <div>
+      <KakaoMap />
+    </div>
   )
 }
 
