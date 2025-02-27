@@ -28,16 +28,24 @@ const DetailPage = () => {
     if (cleanedPharmId) fetchPharmacy();
   }, [cleanedPharmId]);
 
-  
-  if (error) return <p>오류 발생: {error}</p>;
-  if (!pharmacy) return <p>정보 없음</p>;
+  if (error) return <p className="text-red-500 text-center mt-4 text-xl">❌ 오류 발생: {error}</p>;
+  if (!pharmacy) return <p className="text-gray-500 text-center mt-4 text-xl">🔍 약국 정보를 찾을 수 없습니다.</p>;
 
   return (
-    <div>
-      <img src={pharmacy.pharm_image || "default.jpg"} alt={pharmacy.pharm_name} width="100%" />
-      <h2>{pharmacy.pharm_name}</h2>
-      <p>주소: {pharmacy.pharm_address}</p>
-      <p>전화번호: {pharmacy.pharm_phonenum || "정보 없음"}</p>
+    <div className="max-w-3xl mx-auto mt-12 p-8 bg-white shadow-lg rounded-lg">
+      {/* 약국 이미지 (16:9 비율 유지) */}
+      <div className="w-full aspect-[16/9] overflow-hidden rounded-lg">
+        <img
+          src={pharmacy.pharm_image || "/default-pharmacy-image.png"}
+          alt={pharmacy.pharm_name || "기본 약국 이미지"}
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* 약국 정보 */}
+      <h2 className="text-2xl font-bold text-gray-900 mt-6">{pharmacy.pharm_name}</h2>
+      <p className="text-lg text-gray-700 mt-3">📍 {pharmacy.pharm_address}</p>
+      <p className="text-lg text-gray-700 mt-3">📞 {pharmacy.pharm_phonenum || "정보 없음"}</p>
     </div>
   );
 };
