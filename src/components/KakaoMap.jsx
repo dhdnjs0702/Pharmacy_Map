@@ -45,5 +45,5 @@ export default function KakaoMap() {
   }, [loaded]);
   
 
-  return <div id="map" style={{ width: "100%", height: "500px" }} />;
+  return <div id="map" style={{ width: "100%", height: "100vh" }} />;
 }
