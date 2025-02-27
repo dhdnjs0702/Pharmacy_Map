@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+
 const CompSearchBar = () => {
   // 예시 동 목록 (실제 데이터는 API 또는 서버에서 받아올 수 있습니다)
   const dongList = [
@@ -12,14 +13,23 @@ const CompSearchBar = () => {
     "효창동",
     "용문동",
     "한강로동",
-    "이촌1동, 이촌2동",
-    "이태원1동, 이태원2동",
+    "이촌1동",
+    "이촌2동",
+    "이태원1동",
+    "이태원2동",
     "한남동",
     "서빙고동",
     "보광동"
   ];
   const [selectedDong, setSelectedDong] = useState("용산구 동 선택");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchWord, setSearchWord] = useState("");
+
+  // 공통 검색 실행 함수 추가가
+  const searchPlaces = () => {
+    console.log("선택된 동:", selectedDong);
+    console.log("검색어:", searchWord);
+    // 원하는 API 호출 또는 페이지 이동 로직 추가
+  }
 
   // "현재 위치로 검색" 버튼 클릭 시 실행할 로직
   const handleCurrentLocationSearch = () => {
@@ -27,56 +37,54 @@ const CompSearchBar = () => {
     // 예: Geolocation API 등 활용
   };
 
-  // 검색 폼 제출 시 실행할 로직
-  const handleSearch = (e) => {
+  // 클릭 또는 엔터키 처리
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("선택된 동:", selectedDong);
-    console.log("검색어:", searchTerm);
-    // 원하는 API 호출 또는 페이지 이동 로직 추가
+    searchPlaces();
   };
 
   return (
-    <form
-      onSubmit={handleSearch}
-      className="flex flex-col sm:flex-row items-center sm:space-x-3 space-y-3 sm:space-y-0"
-    >
+    <form onSubmit={handleSubmit} className="flex flex-col space-y-3">
       {/* 동 선택 드롭다운 */}
-      <div className="relative">
-        <select
-          value={selectedDong}
-          onChange={(e) => setSelectedDong(e.target.value)}
-          className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+      <div className="flex items-center space-x-3">
+        <div className="relative">
+          <select
+            value={selectedDong}
+            onChange={(e) => setSelectedDong(e.target.value)}
+            className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option disabled>용산구 동 선택</option>
+            {dongList.map((dong, idx) => (
+              <option key={idx} value={dong}>
+                {dong}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* 현재 위치로 검색 버튼 */}
+        <button
+          type="button"
+          onClick={handleCurrentLocationSearch}
+          className="border border-gray-300 rounded-md px-3 py-2 bg-white text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500"
         >
-          <option disabled>용산구 동 선택</option>
-          {dongList.map((dong, idx) => (
-            <option key={idx} value={dong}>
-              {dong}
-            </option>
-          ))}
-        </select>
+          현재 위치로 검색
+        </button>
       </div>
 
-      {/* 현재 위치로 검색 버튼 */}
-      <button
-        type="button"
-        onClick={handleCurrentLocationSearch}
-        className="border border-gray-300 rounded-md px-3 py-2 bg-white text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500"
-      >
-        현재 위치로 검색
-      </button>
-
       {/* 약국 검색 인풋 */}
-      <div className="relative w-full sm:w-64">
+      <div className="flex flex-1 relative w-full sm:w-64">
         <input
           type="text"
           placeholder="약국 검색"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          value={searchWord}
+          onChange={(e) => setSearchWord(e.target.value)}
           className="w-full border border-gray-300 rounded-md px-3 py-2 pr-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
         />
         {/* 돋보기 아이콘 */}
         <svg
-          className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
+          onClick={handleSubmit}
+          className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
@@ -90,13 +98,6 @@ const CompSearchBar = () => {
         </svg>
       </div>
 
-      {/* 큰 화면에서는 검색 버튼 표시 */}
-      <button
-        type="submit"
-        className="hidden sm:block border border-gray-300 rounded-md px-3 py-2 bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-      >
-        검색
-      </button>
     </form>
   );
 };
