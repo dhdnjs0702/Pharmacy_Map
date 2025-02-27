@@ -1,30 +1,45 @@
-import Supabase from "../supabase/client";
+import supabase from "../supabase/client";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const DetailPage = () => {
   const { pharm_id } = useParams();
-  const [pharmacy, setParmacy] = useState(null);
+  const cleanedPharmId = pharm_id.replace(/^:/, "");
+
+  const [pharmacy, setPharmacy] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    Supabase
-      .from("pharmacys")
-      .select("*")
-      .eq("pharm_id", pharm_id)
-      .single()
-      .then(({data}) => setParmacy(data));
-  }, [pharm_id]);
+    const fetchPharmacy = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("pharmacies")
+          .select("*")
+          .eq("pharm_id", cleanedPharmId)
+          .single();
 
-  if (!pharmacy) return <p>정보 없음</p>
+        if (error) throw error;
+        setPharmacy(data);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    if (cleanedPharmId) fetchPharmacy();
+  }, [cleanedPharmId]);
+
+  
+  if (error) return <p>오류 발생: {error}</p>;
+  if (!pharmacy) return <p>정보 없음</p>;
 
   return (
     <div>
-      <img src={pharmacy.pharm_image} alt={pharmacy.pharm_name} width="100%" />
+      <img src={pharmacy.pharm_image || "default.jpg"} alt={pharmacy.pharm_name} width="100%" />
       <h2>{pharmacy.pharm_name}</h2>
       <p>주소: {pharmacy.pharm_address}</p>
-      <p>전화번호: {pharmacy.pharm_phonenum}</p>
+      <p>전화번호: {pharmacy.pharm_phonenum || "정보 없음"}</p>
     </div>
   );
 };
-//카카오맵 예제입니다
+
 export default DetailPage;
