@@ -3,12 +3,20 @@ import React, { useState } from "react";
 const CompSearchBar = () => {
   // 예시 동 목록 (실제 데이터는 API 또는 서버에서 받아올 수 있습니다)
   const dongList = [
-    "이태원동",
-    "한남동",
     "후암동",
+    "용산2가동",
+    "남영동",
+    "청파동",
+    "원효로1동",
+    "원효로2동",
+    "효창동",
     "용문동",
-    "원효로1가",
-    // 추가 항목...
+    "한강로동",
+    "이촌1동, 이촌2동",
+    "이태원1동, 이태원2동",
+    "한남동",
+    "서빙고동",
+    "보광동"
   ];
   const [selectedDong, setSelectedDong] = useState("용산구 동 선택");
   const [searchTerm, setSearchTerm] = useState("");
