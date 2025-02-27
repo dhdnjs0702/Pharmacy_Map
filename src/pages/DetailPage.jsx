@@ -22,7 +22,7 @@ const DetailPage = () => {
       <img src={pharmacy.pharm_image} alt={pharmacy.pharm_name} width="100%" />
       <h2>{pharmacy.pharm_name}</h2>
       <p>주소: {pharmacy.pharm_address}</p>
-      <p>전화번호: {pharmacy.pharm_number}</p>
+      <p>전화번호: {pharmacy.pharm_phonenum}</p>
     </div>
   );
 };
