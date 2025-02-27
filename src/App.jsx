@@ -15,7 +15,7 @@ const App = () => {
         <Route path={"/login"} element={<LoginPage />} />
         <Route path={"/mypage"} element={<MyPage />} />
         <Route path={"/searchresults"} element={<SearchResults />} />
-        <Route path={"/detailpage"} element={<DetailPage />} />
+        <Route path={"/detailpage/:pharm_id"} element={<DetailPage />} />
       </Routes>
     </BrowserRouter>
   );
