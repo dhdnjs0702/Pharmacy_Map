@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 
 const CompSearchBar = () => {
@@ -24,7 +24,7 @@ const CompSearchBar = () => {
   const [selectedDong, setSelectedDong] = useState("용산구 동 선택");
   const [searchWord, setSearchWord] = useState("");
 
-  // 공통 검색 실행 함수 추가가
+  // 공통 검색 실행 함수 추가
   const searchPlaces = () => {
     console.log("선택된 동:", selectedDong);
     console.log("검색어:", searchWord);
