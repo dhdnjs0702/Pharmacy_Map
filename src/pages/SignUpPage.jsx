@@ -17,8 +17,8 @@ const SignUpPage = () => {
   };
 
   return (
-    <div>
-      <h1>😁 회원가입을 해주세요 😁</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 space-y-6">
+      <h1 className="text-2xl font-semibold">😁 회원가입을 해주세요 😁</h1>
       <AuthForm mode={"signup"} onSubmit={SingUpHandler} />
     </div>
   );
