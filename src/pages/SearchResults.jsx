@@ -5,6 +5,7 @@ import KakaoMap from "../components/KakaoMap";
 import "../index.css";
 
 const SearchResults = () => {
+  const { result, mapClickHandler } = AddMapClickEvent();
   return (
     <div className="overflow-hidden min-h-screen">
       <CompNavBar />
