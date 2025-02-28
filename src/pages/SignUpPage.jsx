@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { register } from "../api/auth";
+import { useNavigate } from "react-router-dom";
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     id: "",
     password: "",
@@ -14,9 +18,15 @@ const SignUpPage = () => {
     });
   };
 
-  const SubmitHandler = (e) => {
+  const SubmitHandler = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    try {
+      await register(formData);
+      navigate("/login");
+    } catch (err) {
+      console.error(err);
+      alert("이미 존재하는 ID입니다.");
+    }
   };
 
   return (
