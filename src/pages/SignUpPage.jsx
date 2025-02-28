@@ -16,9 +16,9 @@ const SignUpPage = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-200">
-      <div className="bg-[#5f5f5f] p-8 rounded-lg shadow-lg w-full max-w-md">
+      <div className="bg-[#9c9a9a] p-8 rounded-lg shadow-lg w-full max-w-md">
         <h1 className="text-2xl font-semibold text-[#141414] mb-6 text-center">
-          회원가입을 해주세요!
+        😁 회원가입을 해주세요 😁
         </h1>
 
         <form className="flex flex-col gap-4">
