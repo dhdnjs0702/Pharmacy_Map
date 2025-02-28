@@ -25,14 +25,16 @@ const AuthForm = ({ mode, onSubmit }) => {
         className="flex flex-col gap-6 p-6 bg-white rounded-lg shadow-lg"
         onSubmit={SubmitHandler}
       >
-        <input
-          type="text"
-          name="nickname"
-          value={formData.nickname}
-          onChange={ChangeHandler}
-          placeholder="로그인 시 사용되는 닉네임입니다."
-          className="p-3 rounded-md border border-[#000000] text-m w-80 focus:outline-none focus:ring-2 focus:ring-red-700"
-        />
+        {mode === "signup" && (
+          <input
+            type="text"
+            name="nickname"
+            value={formData.nickname}
+            onChange={ChangeHandler}
+            placeholder="로그인 시 사용되는 닉네임입니다."
+            className="p-3 rounded-md border border-[#000000] text-m w-80 focus:outline-none focus:ring-2 focus:ring-red-700"
+          />
+        )}
         <input
           type="text"
           name="id"
@@ -53,7 +55,7 @@ const AuthForm = ({ mode, onSubmit }) => {
           type={"submit"}
           className="mt-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
         >
-          회원가입
+          {mode === "signup" ? "회원가입" : "로그인"}
         </button>
       </form>
     </div>
