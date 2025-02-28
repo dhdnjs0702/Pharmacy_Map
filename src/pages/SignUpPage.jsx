@@ -14,14 +14,19 @@ const SignUpPage = () => {
     });
   };
 
+  const SubmitHandler = (e) => {
+    e.preventDefault();
+    console.log(formData);
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-200">
       <div className="bg-[#9c9a9a] p-8 rounded-lg shadow-lg w-full max-w-md">
         <h1 className="text-2xl font-semibold text-[#141414] mb-6 text-center">
-        😁 회원가입을 해주세요 😁
+          😁 회원가입을 해주세요 😁
         </h1>
 
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onSubmit={SubmitHandler}>
           <input
             type="text"
             name="nickname"
@@ -47,10 +52,10 @@ const SignUpPage = () => {
             className="p-3 border border-[#000000] rounded-md focus:outline-none focus:ring-2 focus:ring-red-700"
           />
           <button
-            type="submit"
+            type={"submit"}
             className="mt-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
           >
-            가입하기
+            회원가입
           </button>
         </form>
       </div>
