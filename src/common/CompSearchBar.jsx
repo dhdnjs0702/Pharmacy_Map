@@ -61,7 +61,7 @@ const CompSearchBar = () => {
             ))}
           </select>
         </div>
-        +  {/* "현재 위치로 검색" 버튼 추가 */}
+        {/* "현재 위치로 검색" 버튼 추가 */}
         <button
           type="button"
           onClick={handleCurrentLocationSearch}
@@ -74,13 +74,13 @@ const CompSearchBar = () => {
       </div>
       {/* 약국 검색 인풋 (가운데 정렬) */}
       <div className="flex justify-center">
-        <div className="relative w-64">
+        <div className="relative">
           <input
             type="text"
             placeholder="약국 검색"
             value={searchWord}
             onChange={(e) => setSearchWord(e.target.value)}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 pr-10
+            className="w-200 border border-gray-300 rounded-md px-3 py-2 pr-10
                 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
           />
           <svg
