@@ -2,6 +2,7 @@ import supabase from "../supabase/client";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LikeButton from "../components/detail/CompLikeButton";
+import CommentSection from "../components/detail/CompCommentSection";
 
 const DetailPage = () => {
   const { pharm_id } = useParams();
@@ -48,7 +49,9 @@ const DetailPage = () => {
       <p className="text-lg text-gray-700 mt-3">📍 {pharmacy.pharm_address}</p>
       <p className="text-lg text-gray-700 mt-3">📞 {pharmacy.pharm_phonenum || "정보 없음"}</p>
       {/* 좋아요 버튼 */}
-      <LikeButton></LikeButton>
+      <LikeButton />
+      {/* 댓글 섹션 */}
+      <CommentSection />
     </div>
   );
 };
