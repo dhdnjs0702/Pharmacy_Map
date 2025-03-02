@@ -1,8 +1,13 @@
 import { Map } from "react-kakao-maps-sdk";
+import { useSearchParams } from "react-router-dom";
 
 const DetailPage = () => {
-  //searchResults에서 props로 data를 가져와서 객체 접근 되겠습니다.
-
+  //searchResults에서 쿼리스트링으로 data를 가져와서 객체 접근 되겠습니다. <---꼭 확인하세요
+  const [data] = useSearchParams();
+  const placeName = data.get("place_name");
+  const roadAddress = data.get("road_address_name");
+  console.log("쿼리스트링", data);
+  console.log("쿼리스트링세부", placeName, roadAddress);
   return (
     <Map // 지도를 표시할 Container
       center={{
