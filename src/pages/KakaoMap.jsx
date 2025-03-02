@@ -1,17 +1,18 @@
 import { useEffect, useState, useRef } from "react";
 import "../KakaoMap.css";
+import { Link } from "react-router-dom";
 
 const KakaoMap = () => {
   // 상태 관리
-  const [keyword, setKeyword] = useState("");
-  const [places, setPlaces] = useState([]);
-  const [pagination, setPagination] = useState(null);
+  const [keyword, setKeyword] = useState(""); //검색 키워드
+  const [places, setPlaces] = useState([]); //검색 결과
+  const [pagination, setPagination] = useState(null); //페이지네이션
 
   // ref 객체 생성
-  const mapContainer = useRef(null);
-  const map = useRef(null);
-  const markers = useRef([]);
-  const infowindow = useRef(null);
+  const mapContainer = useRef(null); //지도 생성 dom 객체
+  const map = useRef(null); //지도
+  const markers = useRef([]); //마커
+  const infowindow = useRef(null); //마커 위에 올리면 뜨는 설명창
   const ps = useRef(null);
 
   // 컴포넌트 마운트 시 지도 초기화
@@ -20,18 +21,7 @@ const KakaoMap = () => {
     if (window.kakao && window.kakao.maps) {
       initializeMap();
     } else {
-      // 카카오맵 스크립트 로드 (실제 앱에서는 index.html에 스크립트 추가 권장)
-      const script = document.createElement("script");
-      script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_APP_KEY&libraries=services&autoload=false`;
-      script.async = true;
-
-      script.onload = () => {
-        window.kakao.maps.load(() => {
-          initializeMap();
-        });
-      };
-
-      document.head.appendChild(script);
+      console.log("에러가 발생했습니다");
     }
 
     // 컴포넌트 언마운트 시 마커 제거
@@ -47,8 +37,8 @@ const KakaoMap = () => {
   // 지도 초기화 함수
   const initializeMap = () => {
     const mapOption = {
-      center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
-      level: 3,
+      center: new window.kakao.maps.LatLng(37.566826, 126.9786567), //좌표설정
+      level: 3, //확대 정도
     };
 
     // 지도 생성
@@ -64,6 +54,7 @@ const KakaoMap = () => {
   // 키워드 검색 함수
   const searchPlaces = () => {
     if (!keyword.replace(/^\s+|\s+$/g, "")) {
+      //특수 문자나 공백 예외 처리
       alert("키워드를 입력해주세요!");
       return false;
     }
@@ -84,6 +75,8 @@ const KakaoMap = () => {
       alert("검색 결과 중 오류가 발생했습니다.");
     }
   };
+
+  console.log("pg", pagination);
 
   // 검색 결과 표시 함수
   const displayPlaces = (places) => {
@@ -212,26 +205,34 @@ const KakaoMap = () => {
 
         <ul id="placesList">
           {places.map((place, i) => (
-            <li
+            <Link
               key={i}
-              className="item"
-              onMouseOver={() => handleItemMouseOver(place, i)}
-              onMouseOut={handleItemMouseOut}
+              to={`/detailpage?place_name=${place.place_name}&road_address_name=${place.road_address_name}`}
+              onClick={() => {
+                console.log(place);
+              }}
             >
-              <span className={`markerbg marker_${i + 1}`}></span>
-              <div className="info">
-                <h5>{place.place_name}</h5>
-                {place.road_address_name ? (
-                  <>
-                    <span>{place.road_address_name}</span>
-                    <span className="jibun gray">{place.address_name}</span>
-                  </>
-                ) : (
-                  <span>{place.address_name}</span>
-                )}
-                <span className="tel">{place.phone}</span>
-              </div>
-            </li>
+              <li
+                key={i}
+                className="item"
+                onMouseOver={() => handleItemMouseOver(place, i)}
+                onMouseOut={handleItemMouseOut}
+              >
+                <span className={`markerbg marker_${i + 1}`}></span>
+                <div className="info">
+                  <h5>{place.place_name}</h5>
+                  {place.road_address_name ? (
+                    <>
+                      <span>{place.road_address_name}</span>
+                      <span className="jibun gray">{place.address_name}</span>
+                    </>
+                  ) : (
+                    <span>{place.address_name}</span>
+                  )}
+                  <span className="tel">{place.phone}</span>
+                </div>
+              </li>
+            </Link>
           ))}
         </ul>
 
