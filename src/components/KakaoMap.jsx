@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import "../KakaoMap.css";
 
 const KAKAO_API_KEY = import.meta.env.VITE_KAKAO_API_KEY;
 
@@ -32,10 +34,20 @@ export default function KakaoMap() {
     };
     const map = new window.kakao.maps.Map(container, options);
 
-    // 예시로 마커 추가
+    // 커스텀 마커 이미지 설정
+    const imageSrc = "/images/pharmacy-marker.png"; 
+    const imageSize = new window.kakao.maps.Size(40, 40);
+    const imageOption = { offset: new window.kakao.maps.Point(20, 40) };
+    const markerImage = new window.kakao.maps.MarkerImage(
+      imageSrc,
+      imageSize,
+      imageOption
+    );
+
     new window.kakao.maps.Marker({
       position: new window.kakao.maps.LatLng(37.5326, 126.9903),
       map,
+      image: markerImage, // 커스텀 마커 이미지
     });
   }, [loaded]);
 
