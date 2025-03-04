@@ -1,9 +1,59 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import supabase from '../supabase/client';
 
 const MyPage = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  
   const [activeMenu, setActiveMenu] = useState('마이페이지');
+  const [users, setUsers] = useState([]);
+  const [nickName, setNickName] = useState('')
+  const [comments, setComments] = useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase.from("actions").select("*")
+      if (error) {
+        console.log("error => ", error);
+      } else {
+        console.log("data => ", data);
+        setUsers(data);
+      }
+    };
+
+    const getUserNick = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      if (user) {
+        const { data: userData, error } = await supabase
+          .from('users')
+          .select('user_nickname')
+          .eq('user_id', user.id)
+    
+        if (error) {
+          console.log("error => ", error);
+        } else {
+          console.log("nickName => ", userData.user_nickname);
+          setNickName(userData.user_nickname)
+        }
+      }
+    }
+
+    const getComments = async () => {
+      const { data: comments, error} = await supabase.from('comments').select('*').eq('user_nickname', nickName)
+      if (error) {
+        console.log("error => ", error);
+      } else {
+        console.log("comments => ", comments);
+        setComments(comments)
+      }
+    }
+
+    fetchData();
+    getUserNick();
+    getComments();
+  }, []);
+
+  // 임시 데이터
+  const bookmarks = ['북마크 1', '북마크 2', '북마크 3', '북마크 4'];
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -50,18 +100,26 @@ const MyPage = () => {
       </header>
       <div>
         {activeMenu === '마이페이지' && (
-          <div>
+          <div className='flex justify-center items-center h-screen'>
             마이페이지
           </div>
         )}
         {activeMenu === '리뷰' && (
-          <div>
-            리뷰
+          <div className="grid grid-cols-4 gap-4 p-4">
+            {comments.map((comment) => (
+              <div key={comment.comment_id} className="border rounded p-4 shadow-md">
+                {comment.content}
+              </div>
+            ))}
           </div>
         )}
         {activeMenu === '북마크' && (
-          <div>
-            북마크
+          <div className="grid grid-cols-4 gap-4 p-4">
+            {bookmarks.map((bookmark, index) => (
+              <div key={index} className="border rounded p-4 shadow-md">
+                {bookmark}
+              </div>
+            ))}
           </div>
         )}
       </div>
