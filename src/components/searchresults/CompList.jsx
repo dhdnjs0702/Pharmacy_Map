@@ -8,9 +8,9 @@ const PlacesList = () => {
       {places.map((place, i) => (
         <Link
           key={i}
-          to={`/detailpage?place_name=${place.place_name}&road_address_name=${
+          to={`/detail?place_name=${place.place_name}&road_address_name=${
             place.road_address_name || place.address_name || ""
-          }`}
+          }&pharm_id=${place.pharm_id}`}
         >
           <li className="item">
             <span className={`markerbg marker_${i + 1}`}></span>
