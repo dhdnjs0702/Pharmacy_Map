@@ -1,7 +1,9 @@
+
 import { useNavigate } from "react-router-dom";
 import AuthForm from "../components/login/AuthForm";
 import supabase from "../supabase/client";
 import { useState } from "react";
+
 
 const LoginPage = () => {
   const navigate = useNavigate();
