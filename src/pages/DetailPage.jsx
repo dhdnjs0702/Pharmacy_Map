@@ -1,41 +1,46 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import supabase from "../supabase/client";
 import LikeButton from "../components/detail/CompLikeButton";
 import CommentSection from "../components/detail/CompCommentSection";
 
 const DetailPage = () => {
-  const { pharm_id } = useParams(); // URL에서 약국 ID 가져오기
+  // 쿼리 스트링에서 pharm_id 받아오기
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const pharm_id = params.get("pharm_id"); // 쿼리 스트링에서 pharm_id 받기
+
   const [pharmacy, setPharmacy] = useState(null); // 약국 데이터 상태
-  const [error, setError] = useState(null); // 오류 상태
 
   useEffect(() => {
     if (!pharm_id) {
-      console.error("pharm_id가 undefined입니다. API 요청 중단!");
+      console.error("쿼리스트링으로 pharm_id 못 받아옴!");
       return;
     }
 
     // Supabase에서 약국 데이터 가져오기
     const fetchPharmacy = async () => {
       try {
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from("pharmacies")
           .select("*")
           .eq("pharm_id", pharm_id)
           .single();
 
-        if (error) throw error;
+        if (!data) {
+          console.warn("약국 데이터 없음.");
+          return;
+        }
+
         setPharmacy(data);
       } catch (error) {
-        console.error("Supabase 데이터 가져오기 실패:", error.message);
-        setError(error.message);
+        console.error("Supabase 연동 실패:", error.message);
       }
     };
 
     fetchPharmacy();
   }, [pharm_id]);
 
-  if (error) return <p className="text-red-500 text-center mt-4 text-xl">오류 발생: {error}</p>;
   if (!pharmacy) return <p className="text-gray-500 text-center mt-4 text-xl">약국 정보를 찾을 수 없습니다.</p>;
 
   return (
@@ -54,7 +59,7 @@ const DetailPage = () => {
       <p className="text-lg text-gray-700 mt-3">📍 {pharmacy.pharm_address}</p>
 
       {/* pharm_id가 존재할 때만 좋아요 버튼 렌더링 */}
-      {pharmacy?.pharm_id && <LikeButton pharm_id={pharmacy.pharm_id} />}
+      {pharm_id && <LikeButton pharm_id={pharm_id} />}
 
       {/* 댓글 섹션 */}
       <CommentSection />
