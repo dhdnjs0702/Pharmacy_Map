@@ -33,7 +33,7 @@ const SearchResults = () => {
         height: "100vh",
         margin: 0,
         padding: 0,
-        overflow: "hidden", 
+        overflow: "hidden",
       }}
     >
       <CompNavBar />
@@ -44,20 +44,26 @@ const SearchResults = () => {
             width: "100%",
             height: "100%",
             position: "relative",
-            overflow: "hidden", 
+            overflow: "hidden",
           }}
         >
           <CompMap />
-          <div id="menu_wrap" className="bg_white">
-            <CompSearchBar onSearch={searchPharmacies} />
-            {isLoading ? (
-              <div className="loading">검색 중...</div>
-            ) : (
-              <>
-                <CompList />
-                <CompPagination onPageChange={handlePaginationClick} />
-              </>
-            )}
+
+          <div id="menu_wrap">
+            <div id="searchBarContainer">
+              <CompSearchBar onSearch={searchPharmacies} />
+            </div>
+
+            <div id="listContainer">
+              {isLoading ? (
+                <div className="loading">검색 중...</div>
+              ) : (
+                <>
+                  <CompList />
+                  <CompPagination onPageChange={handlePaginationClick} />
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
