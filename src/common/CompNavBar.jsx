@@ -2,7 +2,7 @@ import React from 'react'
 
 const CompNavBar = () => {
   return (
-    <div>CompNavBar</div>
+    <div>CompNavBar삽입 부분</div>
   )
 }
 
