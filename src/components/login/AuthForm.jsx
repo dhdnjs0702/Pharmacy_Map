@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-const AuthForm = ({ mode, onSubmit }) => {
+const AuthForm = ({ mode, onSubmit, setMode }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    nickname: "", // 닉네임 추가
+    nickname: "",
   });
 
   const handleChange = (e) => {
@@ -13,7 +13,6 @@ const AuthForm = ({ mode, onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (formData.password.length < 6) {
       alert("비밀번호는 6자 이상이어야 합니다.");
       return;
@@ -21,11 +20,14 @@ const AuthForm = ({ mode, onSubmit }) => {
     onSubmit(formData);
   };
 
+  const handleModeChange = (e) => {
+    e.preventDefault(); // 폼 제출 방지
+    e.stopPropagation(); // 이벤트 버블링 중단
+    setMode(mode === "signup" ? "login" : "signup");
+  };
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-4 p-6 rounded-lg shadow-lg bg-white"
-    >
+    <form onSubmit={handleSubmit} className="space-y-4 p-6 rounded-lg shadow-lg bg-white">
       <input
         type="email"
         name="email"
@@ -55,6 +57,13 @@ const AuthForm = ({ mode, onSubmit }) => {
           className="w-full p-3 border-2 border-[#e08c8c] rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
         />
       )}
+      <button
+        type="button" // type을 button으로 변경
+        onClick={handleModeChange}
+        className="w-full py-3 bg-red-400 text-white font-semibold rounded-md hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500"
+      >
+        {mode === "signup" ? "로그인으로 전환" : "회원가입으로 전환"}
+      </button>
       <button
         type="submit"
         className="w-full py-3 bg-red-400 text-white font-semibold rounded-md hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500"

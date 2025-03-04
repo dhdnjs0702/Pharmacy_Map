@@ -17,6 +17,7 @@ const MainPage = () => {
   useEffect(() => {
     const checkUser = async () => {
       const { data, error } = await supabase.auth.getUser();
+
       if (error || !data?.user) {
         Swal.fire({
           title: "에러",
@@ -111,8 +112,8 @@ const MainPage = () => {
   useEffect(() => {
     if (error) {
       Swal.fire({
-        title: "에러",
-        text: "에러가 발생했습니다. 관리자에게 문의 해주세요",
+        title: "앗!",
+        text: "잘못된 접근입니다. 로그인을 먼저 해주세요.",
         icon: "error",
         confirmButtonText: "확인",
         confirmButtonColor: "#3085D6",
