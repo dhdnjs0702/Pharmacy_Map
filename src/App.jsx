@@ -5,7 +5,6 @@ import LoginPage from "./pages/LoginPage";
 import MyPage from "./pages/MyPage";
 import SearchResults from "./pages/SearchResults";
 import DetailPage from "./pages/DetailPage";
-
 const App = () => {
   return (
     <BrowserRouter>
