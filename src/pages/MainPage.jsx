@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import CompNavBar from "../common/CompNavBar";
 import { useKakaoStore } from "../zustand/dragon";
-import { useUserStore } from "../zustand/dragon"; // 현재 위치 상태 가져오기
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import useKakaoSearch from "../customhook/searchresults/useKakaoSearch";
@@ -11,7 +10,7 @@ const MainPage = () => {
   const navigate = useNavigate(); // 페이지 이동 함수
   const { keyword, setKeyword } = useKakaoStore();
   const { error, searchPharmacies } = useKakaoSearch();
-  const { currentLocation, setCurrentLocation } = useUserStore(); // Zustand에서 위치 정보 가져오기
+  const [ currentLocation, setCurrentLocation ] = useState(); 
   const [user, setUser] = useState(null); //  로그인된 사용자 상태 추가
 
   //  로그인 여부 확인
