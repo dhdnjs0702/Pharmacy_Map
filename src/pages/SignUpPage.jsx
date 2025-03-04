@@ -35,7 +35,7 @@ const SignUpPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 space-y-6">
-      <h1 className="text-2xl font-semibold">회원가입</h1>
+      <h1 className="text-2xl font-semibold">😁 회원가입 😁</h1>
       <AuthForm mode="signup" onSubmit={SignUpHandler} />
     </div>
   );
