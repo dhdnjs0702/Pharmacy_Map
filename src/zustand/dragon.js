@@ -1,12 +1,17 @@
 import { create } from "zustand";
-//예시 코드입니다
-const useUserStore = create((set) => {
+
+const useKakaoStore = create((set) => {
   return {
-    isLoginMode: true,
-    setIsLoginMode: (mode) => {
-      return set({ isLoginMode: mode });
-    },
+    places: [],
+    pagination: null,
+    isLoading: false,
+    error: null,
+
+    setPlaces: (places) => set({ places }),
+    setPagination: (pagination) => set({ pagination }),
+    setLoading: (loading) => set({ loading }),
+    setError: (error) => set({ error }),
   };
 });
 
-export { useUserStore }; //스토어 생성하시고 여기에 export해주시면 됩니다.
+export { useKakaoStore };
