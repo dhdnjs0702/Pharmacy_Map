@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const KAKAO_API_KEY = import.meta.env.VITE_KAKAO_API_KEY; // .env.local에서 API 키 가져오기
+const KAKAO_API_KEY = import.meta.env.VITE_KAKAO_API_KEY;
 
 export default function KakaoMap() {
   const [loaded, setLoaded] = useState(false);
@@ -27,23 +27,25 @@ export default function KakaoMap() {
     if (!container) return;
 
     const options = {
-      center: new window.kakao.maps.LatLng(37.5326, 126.9903), //중심 좌표(용산 구청으로 했습니다)
-      level: 3, //지도  확대 레벨
+      center: new window.kakao.maps.LatLng(37.5326, 126.9903),
+      level: 3,
     };
-
     const map = new window.kakao.maps.Map(container, options);
 
-    // const imageSrc = ""
-    // const image
-
-    //중심 좌표에 마커 추가 예시
+    // 예시로 마커 추가
     new window.kakao.maps.Marker({
       position: new window.kakao.maps.LatLng(37.5326, 126.9903),
       map,
-    })
-    
+    });
   }, [loaded]);
-  
 
-  return <div id="map" style={{ width: "100%", height: "100vh" }} />;
+  return (
+    <div
+      id="map"
+      style={{
+        width: "100%",
+        height: "100%",
+      }}
+    />
+  );
 }
