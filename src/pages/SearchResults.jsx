@@ -12,6 +12,7 @@ import { useKakaoStore } from "../zustand/dragon";
 const SearchResults = () => {
   const { error, searchPharmacies, handlePaginationClick } = useKakaoSearch();
   const { isLoading } = useKakaoStore();
+
   useEffect(() => {
     if (error) {
       Swal.fire({
@@ -25,25 +26,42 @@ const SearchResults = () => {
   }, [error]);
 
   return (
-    <>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+        margin: 0,
+        padding: 0,
+        overflow: "hidden", 
+      }}
+    >
       <CompNavBar />
-      <div className="map_wrap">
-        <CompMap />
-
-        <div id="menu_wrap" className="bg_white">
-          <CompSearchBar onSearch={searchPharmacies} />
-
-          {isLoading ? (
-            <div className="loading">검색 중...</div>
-          ) : (
-            <>
-              <CompList /> {/*디테일 페이지는 complist에서 쿼리 스트링 참조*/}
-              <CompPagination onPageChange={handlePaginationClick} />
-            </>
-          )}
+      <div style={{ flex: 1, position: "relative" }}>
+        <div
+          className="map_wrap"
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "relative",
+            overflow: "hidden", 
+          }}
+        >
+          <CompMap />
+          <div id="menu_wrap" className="bg_white">
+            <CompSearchBar onSearch={searchPharmacies} />
+            {isLoading ? (
+              <div className="loading">검색 중...</div>
+            ) : (
+              <>
+                <CompList />
+                <CompPagination onPageChange={handlePaginationClick} />
+              </>
+            )}
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
