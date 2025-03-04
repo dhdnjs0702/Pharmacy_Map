@@ -18,7 +18,7 @@ const LoginPage = () => {
 
       if (error) throw error;
       alert("로그인 성공!");
-      navigate("/");
+      navigate("/mainpage");
     } catch (err) {
       alert("로그인 실패: " + err.message);
     }
