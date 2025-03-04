@@ -1,25 +1,42 @@
-import React from "react";
-import { register } from "../api/auth";
 import { useNavigate } from "react-router-dom";
 import AuthForm from "../components/login/AuthForm";
+import supabase from "../supabase/client";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
 
-  const SingUpHandler = async (formData) => {
+  const SignUpHandler = async (formData) => {
+
+    const { email, password, nickname } = formData;
+
     try {
-      await register(formData);
+      const { data, error } = await supabase.auth.signUp({
+        email: email.trim(),
+        password: password.trim(),
+      });
+
+      if (error) throw error;
+
+      const userId = data.user?.id;
+      if (userId) {
+        const { error: insertError } = await supabase
+          .from("users")
+          .insert([{ user_id: userId, user_nickname: nickname }]);
+
+        if (insertError) throw insertError;
+      }
+
+      alert("회원가입이 완료되었습니다.");
       navigate("/login");
     } catch (err) {
-      console.error(err);
-      alert("이미 존재하는 ID입니다.");
+      alert("회원가입 실패: " + err.message);
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 space-y-6">
-      <h1 className="text-2xl font-semibold">😁 회원가입을 해주세요 😁</h1>
-      <AuthForm mode={"signup"} onSubmit={SingUpHandler} />
+      <h1 className="text-2xl font-semibold">회원가입</h1>
+      <AuthForm mode="signup" onSubmit={SignUpHandler} />
     </div>
   );
 };

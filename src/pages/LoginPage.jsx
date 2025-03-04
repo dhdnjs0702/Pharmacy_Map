@@ -1,20 +1,27 @@
-import React from "react";
-import AuthForm from "../components/login/AuthForm";
-import { login } from "../api/auth";
 import { useNavigate } from "react-router-dom";
+import AuthForm from "../components/login/AuthForm";
+import supabase from "../supabase/client";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+
   const loginHandler = async (formData) => {
+    const { email, password } = formData;
+
     try {
-      await login(formData);
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password: password.trim(),
+      });
+
+      if (error) throw error;
+
+      alert("로그인 성공!");
       navigate("/");
     } catch (err) {
-      console.error(err);
-      alert("로그인 실패!");
+      alert("로그인 실패: " + err.message);
     }
   };
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 space-y-6">
       <h1 className="text-2xl font-semibold">😊 로그인이 필요합니다 😊</h1>
