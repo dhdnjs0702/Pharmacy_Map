@@ -1,22 +1,49 @@
-import CompNavBar from "../common/CompNavBar";
+import { useEffect } from "react";
+import "../KakaoMap.css";
+import Swal from "sweetalert2";
+import CompMap from "../components/searchresults/CompMap";
 import CompSearchBar from "../common/CompSearchBar";
-import KakaoMap from "../components/KakaoMap";
-import "../index.css";
+import CompList from "../components/searchresults/CompList";
+import CompPagination from "../components/searchresults/CompPagination";
+import useKakaoSearch from "../customhook/searchresults/useKakaoSearch";
+import CompNavBar from "../common/CompNavBar";
+import { useKakaoStore } from "../zustand/dragon";
 
 const SearchResults = () => {
-  // const { result, mapClickHandler } = AddMapClickEvent();
+  const { error, searchPharmacies, handlePaginationClick } = useKakaoSearch();
+  const { isLoading } = useKakaoStore();
+  useEffect(() => {
+    if (error) {
+      Swal.fire({
+        title: "에러",
+        text: "에러가 발생했습니다. 관리자에게 문의 해주세요",
+        icon: "error",
+        confirmButtonText: "확인",
+        confirmButtonColor: "#3085d6",
+      });
+    }
+  }, [error]);
+
   return (
-    <div className="overflow-hidden min-h-screen">
+    <>
       <CompNavBar />
-      <div className="relative">
-        {/* KakaoMap가 전체 배경을 채우고, 그 위에 좌측 패널이 모달처럼 떠 있도록 */}
-        <KakaoMap />
-        <div className="absolute top-5 left-5 w-[400px] h-[90vh] 
-                p-4 bg-white shadow-md z-10 rounded-lg">
-          <CompSearchBar />
+      <div className="map_wrap">
+        <CompMap />
+
+        <div id="menu_wrap" className="bg_white">
+          <CompSearchBar onSearch={searchPharmacies} />
+
+          {isLoading ? (
+            <div className="loading">검색 중...</div>
+          ) : (
+            <>
+              <CompList /> {/*디테일 페이지는 complist에서 쿼리 스트링 참조*/}
+              <CompPagination onPageChange={handlePaginationClick} />
+            </>
+          )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
