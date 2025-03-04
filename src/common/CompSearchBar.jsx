@@ -1,16 +1,15 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Swal from "sweetalert2";
+import "./CompSearchBar.css"; // 검색 바 전용 CSS import
 
 const CompSearchBar = ({ onSearch }) => {
   const [keyword, setKeyword] = useState("");
 
-  const handleKeywordChange = (e) => {
-    setKeyword(e.target.value);
-  };
+  const handleKeywordChange = (e) => setKeyword(e.target.value);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!keyword.replace(/^\s+|\s+$/g, "")) {
+    if (!keyword.trim()) {
       Swal.fire({
         title: "앗!",
         text: "키워드를 입력해주세요",
@@ -18,26 +17,24 @@ const CompSearchBar = ({ onSearch }) => {
         confirmButtonText: "확인",
         confirmButtonColor: "#3085d6",
       });
-      return false;
+      return;
     }
     onSearch(keyword);
   };
 
   return (
-    <div className="option">
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="text"
-            value={keyword}
-            id="keyword"
-            onChange={handleKeywordChange}
-            placeholder="약국명으로 검색"
-          />
-          <button type="submit">검색</button>
-        </div>
-      </form>
-    </div>
+    <form className="search-bar-container" onSubmit={handleSubmit}>
+      <input
+        type="text"
+        className="search-input"
+        placeholder="약국명을 검색해 주세요."
+        value={keyword}
+        onChange={handleKeywordChange}
+      />
+      <button type="submit" className="search-button">
+        검색
+      </button>
+    </form>
   );
 };
 
