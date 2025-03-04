@@ -41,28 +41,38 @@ const DetailPage = () => {
     fetchPharmacy();
   }, [pharm_id]);
 
-  if (!pharmacy) return <p className="text-gray-500 text-center mt-4 text-xl">약국 정보를 찾을 수 없습니다.</p>;
+  if (!pharmacy)
+    return <p className="text-gray-500 text-center mt-8 text-xl">❌ 약국 정보를 찾을 수 없습니다.</p>;
 
   return (
-    <div className="max-w-3xl mx-auto mt-12 p-8 bg-white shadow-lg rounded-lg">
+    <div className="max-w-3xl mx-auto mt-10 p-8 bg-white shadow-xl rounded-lg border border-gray-200">
       {/* 약국 이미지 (16:9 비율 유지) */}
-      <div className="w-full aspect-[16/9] overflow-hidden rounded-lg">
+      <div className="w-full aspect-[16/9] overflow-hidden rounded-lg bg-gray-200">
         <img
-          src={pharmacy.pharm_image || "/default-pharmacy-image.png"} // 기본 이미지 적용
+          src={pharmacy.pharm_image || "/default-pharmacy-image.png"} // 조건부 렌더링으로 데이터베이스에 이미지가 없을땐 기본 이미지 적용
           alt={pharmacy.pharm_name || "기본 약국 이미지"}
           className="w-full h-full object-cover"
         />
       </div>
 
-      {/* 약국 정보 표시 */}
-      <h2 className="text-2xl font-bold text-gray-900 mt-6">{pharmacy.pharm_name}</h2>
-      <p className="text-lg text-gray-700 mt-3">📍 {pharmacy.pharm_address}</p>
+      {/* 약국 정보 */}
+      <div className="mt-6">
+        <h2 className="text-3xl font-extrabold text-gray-900">{pharmacy.pharm_name}</h2>
+        <p className="text-lg text-gray-600 mt-3">📍 {pharmacy.pharm_address}</p>
+        <p className="text-lg text-gray-600">📞 {pharmacy.pharm_phonenum}</p>
+      </div>
 
-      {/* pharm_id가 존재할 때만 좋아요 버튼 렌더링 */}
-      {pharm_id && <LikeButton pharm_id={pharm_id} />}
+      {/* 좋아요 버튼 & 댓글 섹션 레이아웃 */}
+      <div className="mt-6 flex flex-col gap-6">
+        <div>
+          {pharm_id && <LikeButton pharm_id={pharm_id} />}
+        </div>
 
-      {/* 댓글 섹션 */}
-      <CommentSection />
+        {/* 댓글 섹션 (여백 추가) */}
+        <div className="border-t border-gray-300 pt-6">
+          <CommentSection pharm_id={pharm_id} />
+        </div>
+      </div>
     </div>
   );
 };

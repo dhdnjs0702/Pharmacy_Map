@@ -3,46 +3,55 @@ import PropTypes from "prop-types";
 import supabase from "../../supabase/client";
 
 const CommentSection = ({ pharm_id }) => {
-    const [comments, setComments] = useState([]); // 댓글 목록 상태
-    const [newComment, setNewComment] = useState(""); // 입력 필드 상태
-    const [user_id, setUserId] = useState(null); // 로그인된 사용자 ID
+    // 댓글 목록 상태
+    const [comments, setComments] = useState([]); 
+    // 입력 필드 상태
+    const [newComment, setNewComment] = useState(""); 
+    // 로그인된 사용자 정보 (ID, 닉네임)
+    const [user, setUser] = useState(null); 
 
+    // 현재 로그인한 사용자 정보 가져오기
     useEffect(() => {
-        // 로그인한 사용자 정보 가져오기
-        const fetchUser = async () => {
+        const fetchUserHandler = async () => {
             const { data: { user }, error } = await supabase.auth.getUser();
             if (error || !user) return;
-            setUserId(user.id);
+
+            // `users` 테이블에서 `user_nickname` 가져오기
+            const { data: userData, error: userError } = await supabase
+                .from("users")
+                .select("user_nickname")
+                .eq("user_id", user.id) 
+                .single();
+
+            if (userError) return;
+
+            // 사용자 정보 상태 업데이트
+            setUser({ id: user.id, nickname: userData?.user_nickname || "익명" });
         };
 
-        fetchUser();
+        fetchUserHandler();
     }, []);
 
+    // 특정 약국의 댓글 목록 가져오기
     useEffect(() => {
         if (!pharm_id) return;
 
-        // Supabase에서 특정 약국에 대한 댓글 불러오기
-        const fetchComments = async () => {
+        const fetchCommentsHandler = async () => {
             const { data, error } = await supabase
                 .from("comments")
-                .select("*")
+                .select("content, created_at, user_id, user_nickname")
                 .eq("pharm_id", pharm_id)
                 .order("created_at", { ascending: false });
 
-            if (error) {
-                console.error("댓글 가져오기 실패:", error.message);
-                return;
-            }
-
-            setComments(data);
+            if (!error) setComments(data);
         };
 
-        fetchComments();
+        fetchCommentsHandler();
     }, [pharm_id]);
 
     // 댓글 등록 핸들러
-    const handleAddComment = async () => {
-        if (!user_id) {
+    const addCommentHandler = async () => {
+        if (!user) {
             alert("로그인이 필요합니다.");
             return;
         }
@@ -53,14 +62,28 @@ const CommentSection = ({ pharm_id }) => {
         }
 
         try {
+            // Supabase에 댓글 추가
             const { error } = await supabase
                 .from("comments")
-                .insert([{ pharm_id, user_id, content: newComment, created_at: new Date() }]);
+                .insert([{ 
+                    pharm_id, 
+                    user_id: user.id, 
+                    user_nickname: user.nickname, // 닉네임 함께 저장
+                    content: newComment, 
+                    created_at: new Date().toISOString() 
+                }]);
 
             if (error) throw error;
 
-            setNewComment(""); // 입력 필드 초기화
-            setComments([{ pharm_id, user_id, content: newComment, created_at: new Date() }, ...comments]);
+            // UI 업데이트 (새 댓글을 리스트 최상단에 추가)
+            setNewComment(""); 
+            setComments([{ 
+                pharm_id, 
+                user_id: user.id, 
+                user_nickname: user.nickname, 
+                content: newComment, 
+                created_at: new Date().toISOString() 
+            }, ...comments]);
         } catch (error) {
             console.error("댓글 등록 실패:", error.message);
         }
@@ -74,6 +97,10 @@ const CommentSection = ({ pharm_id }) => {
                 {comments.length > 0 ? (
                     comments.map((comment, index) => (
                         <div key={index} className="p-2 border-b border-gray-200">
+                            {/* 닉네임 및 댓글 내용 표시 */}
+                            <p className="text-sm font-semibold text-gray-800">
+                                {comment.user_nickname || "익명"}
+                            </p>
                             <p className="text-gray-700">{comment.content}</p>
                         </div>
                     ))
@@ -83,23 +110,26 @@ const CommentSection = ({ pharm_id }) => {
             </div>
 
             {/* 댓글 입력 및 등록 버튼 */}
-            <input
-                type="text"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="댓글을 입력하세요..."
-                className="w-full p-2 border border-gray-300 rounded-md"
-            />
-            <button
-                onClick={handleAddComment}
-                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
-            >
-                등록
-            </button>
+            <div className="flex gap-2">
+                <input
+                    type="text"
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="댓글을 입력하세요..."
+                    className="flex-1 p-2 border border-gray-300 rounded-md"
+                />
+                <button
+                    onClick={addCommentHandler}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                >
+                    등록
+                </button>
+            </div>
         </div>
     );
 };
 
+// `pharm_id`는 필수 props로 설정
 CommentSection.propTypes = {
     pharm_id: PropTypes.string.isRequired,
 };

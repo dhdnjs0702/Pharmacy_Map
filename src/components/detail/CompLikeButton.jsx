@@ -2,84 +2,96 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import supabase from "../../supabase/client";
 
-const LikeButton = ({ pharm_id }) => {
-    const [isLiked, setIsLiked] = useState(false); // 좋아요 상태
+const BookmarkButton = ({ pharm_id }) => {
+    const [isBookmarked, setIsBookmarked] = useState(false); // 북마크 상태
     const [user_id, setUserId] = useState(null); // 로그인한 사용자 ID
 
+    // 현재 로그인한 사용자 ID 가져오기
     useEffect(() => {
-        // 현재 로그인한 사용자 ID 가져오기
-        const fetchUser = async () => {
+        const fetchUserHandler = async () => {
             const { data: { user }, error } = await supabase.auth.getUser();
-            if (error || !user) return; // 에러 발생 시 종료
-            setUserId(user.id); // 로그인된 사용자의 ID 설정
+            if (error || !user) return;
+            setUserId(user.id);
         };
 
-        fetchUser();
+        fetchUserHandler();
     }, []);
 
+    // 사용자가 특정 약국을 북마크했는지 확인
     useEffect(() => {
-        if (!pharm_id || !user_id) return; // 필수 데이터가 없으면 실행하지 않음
+        if (!pharm_id || !user_id) return;
 
-        // 사용자가 해당 약국을 좋아요 했는지 확인하는 함수
-        const checkLike = async () => {
+        const checkBookmarkHandler = async () => {
             try {
-                const { data } = await supabase
-                    .from("actions") 
+                const { data, error } = await supabase
+                    .from("actions")
                     .select("action_id")
-                    .eq("pharm_id", pharm_id) // 특정 약국에 대한 좋아요 데이터 조회
-                    .eq("user_id", user_id) // 현재 로그인한 사용자 ID와 매칭되는 데이터 조회
-                    .single();
+                    .eq("pharm_id", pharm_id)
+                    .eq("user_id", user_id)
+                    .maybeSingle(); // 데이터가 없으면 null 반환
 
-                if (data) setIsLiked(true); // 좋아요가 존재하면 상태 업데이트
+                if (error) throw error;
+
+                setIsBookmarked(!!data); // 데이터가 있으면 true, 없으면 false
             } catch (error) {
-                console.error("좋아요 상태 조회 실패:", error.message);
+                console.error("북마크 상태 조회 실패:", error.message);
             }
         };
 
-        checkLike();
+        checkBookmarkHandler();
     }, [pharm_id, user_id]);
 
-    // 좋아요 버튼 클릭 핸들러
-    const likeBtnHandler = async () => {
+    // 북마크 버튼 클릭 핸들러
+    const toggleBookmarkHandler = async () => {
         if (!user_id) {
-            alert("로그인이 필요합니다."); // 로그인하지 않은 사용자는 좋아요 불가
+            alert("로그인이 필요합니다.");
             return;
         }
 
-        setIsLiked((prev) => !prev); // UI 상태 먼저 변경 (낙관적 업데이트)
-
         try {
-            if (isLiked) {
-                // 좋아요 취소
-                await supabase
+            if (isBookmarked) {
+                // 북마크 취소
+                const { error } = await supabase
                     .from("actions")
                     .delete()
                     .eq("pharm_id", pharm_id)
                     .eq("user_id", user_id);
+
+                if (error) throw error;
+
+                setIsBookmarked(false);
             } else {
-                // 좋아요 추가
-                await supabase.from("actions").insert([
-                    { pharm_id, user_id, created_at: new Date() }
-                ]);
+                // 북마크 추가
+                const { error } = await supabase
+                    .from("actions")
+                    .insert([{ pharm_id, user_id, created_at: new Date().toISOString() }]);
+
+                if (error) throw error;
+
+                setIsBookmarked(true);
             }
         } catch (error) {
-            console.error("좋아요 처리 실패:", error.message);
-            setIsLiked((prev) => !prev); // 오류 발생 시 원래 상태로 되돌리기
+            console.error("북마크 처리 실패:", error.message);
         }
     };
 
     return (
         <button 
-            onClick={likeBtnHandler} 
-            className="px-4 py-2 border border-gray-300 rounded-md"
+            onClick={toggleBookmarkHandler} 
+            className={`flex items-center gap-2 px-4 py-2 text-lg font-semibold rounded-md transition-all duration-200 ${
+                isBookmarked 
+                    ? "bg-blue-100 text-blue-600 border border-blue-400 shadow-sm" 
+                    : "bg-gray-200 text-gray-600 border border-gray-400 hover:bg-gray-300"
+            }`}
         >
-            {isLiked ? "❤️" : "🤍"} {/* 좋아요 상태에 따라 아이콘 변경 */}
+            {isBookmarked ? "🔖" : "🏷️"}
+            {isBookmarked ? "북마크 완료" : "북마크 하기"}
         </button>
     );
 };
 
-LikeButton.propTypes = {
+BookmarkButton.propTypes = {
     pharm_id: PropTypes.string.isRequired, // pharm_id 필수값 설정
 };
 
-export default LikeButton;
+export default BookmarkButton;
