@@ -9,9 +9,9 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={"/"} element={<MainPage />} />
+        <Route path={"/mainpage"} element={<MainPage />} />
         <Route path={"/signup"} element={<SignUpPage />} />
-        <Route path={"/login"} element={<LoginPage />} />
+        <Route path={"/"} element={<LoginPage />} />
         <Route path={"/mypage"} element={<MyPage />} />
         <Route path={"/searchresults"} element={<SearchResults />} />
         <Route path={"/detail"} element={<DetailPage />} />
