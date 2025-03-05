@@ -1,21 +1,14 @@
 import { useEffect, useState } from "react";
 import supabase from "../supabase/client";
+
 const MyPage = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("마이페이지");
   const [user, setUser] = useState("");
   const [comments, setComments] = useState([]);
+  const [bookmarks, setBookmarks] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const { data, error } = await supabase.from("actions").select("*");
-      if (error) {
-        console.log("actions error => ", error);
-      } else {
-        console.log("actions data => ", data);
-      }
-    };
-
     const getUserId = async () => {
       try {
         const {
@@ -34,8 +27,10 @@ const MyPage = () => {
           } else if (userData) {
             console.log("Full User Data => ", userData);
             setUser(userData);
-            // 사용자 데이터를 가져온 후 바로 댓글 가져오기
+
+            // 사용자 데이터를 가져온 후 댓글과 북마크 가져오기
             getComments(userData.user_id);
+            getBookmarks(userData.user_id);
           }
         }
       } catch (error) {
@@ -59,19 +54,58 @@ const MyPage = () => {
       }
     };
 
-    fetchData();
+    const getBookmarks = async (userId) => {
+      if (userId) {
+        const { data: bookmarkData, error } = await supabase
+          .from("actions")
+          .select("created_at, pharm_id")
+          .eq("user_id", userId);
+
+        if (error) {
+          console.log("bookmarks error => ", error);
+          return;
+        }
+
+        // 추가로 약국 정보 가져오기
+        const pharmIds = bookmarkData.map((bookmark) => bookmark.pharm_id);
+        const { data: pharmData, error: pharmError } = await supabase
+          .from("pharmacies")
+          .select("pharm_id, pharm_name")
+          .in("pharm_id", pharmIds);
+
+        if (pharmError) {
+          console.log("pharmacy error => ", pharmError);
+          return;
+        }
+
+        // 데이터 병합 (안전한 방식)
+        const mergedBookmarks = bookmarkData.map((bookmark) => {
+          const pharmacy = pharmData.find(
+            (p) => p.pharm_id === bookmark.pharm_id
+          );
+          return {
+            ...bookmark,
+            pharm_name: pharmacy ? pharmacy.pharm_name : "알 수 없는 약국",
+          };
+        });
+
+        console.log("bookmarks => ", mergedBookmarks);
+        setBookmarks(mergedBookmarks);
+      }
+    };
+
     getUserId();
-    getComments();
   }, []);
-  // 임시 데이터
-  const bookmarks = ["북마크 1", "북마크 2", "북마크 3", "북마크 4"];
+
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
+
   const handleMenu = (menu) => {
     setActiveMenu(menu);
     setDropdownOpen(false);
   };
+
   return (
     <div>
       <header className="bg-green-500 p-4">
@@ -128,7 +162,10 @@ const MyPage = () => {
           <div className="grid grid-cols-4 gap-4 p-4">
             {bookmarks.map((bookmark, index) => (
               <div key={index} className="border rounded p-4 shadow-md">
-                {bookmark}
+                {bookmark.pharm_name}
+                <div className="text-sm text-gray-500">
+                  {new Date(bookmark.created_at).toLocaleDateString()}
+                </div>
               </div>
             ))}
           </div>
@@ -137,4 +174,5 @@ const MyPage = () => {
     </div>
   );
 };
+
 export default MyPage;
