@@ -1,16 +1,13 @@
 import { useState } from "react";
-
-const AuthForm = ({ mode, onSubmit, setMode }) => {
+const AuthForm = ({ mode, onSubmit }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    nickname: "",
+    nickname: "", // 닉네임 추가
   });
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.password.length < 6) {
@@ -19,15 +16,11 @@ const AuthForm = ({ mode, onSubmit, setMode }) => {
     }
     onSubmit(formData);
   };
-
-  const handleModeChange = (e) => {
-    e.preventDefault(); // 폼 제출 방지
-    e.stopPropagation(); // 이벤트 버블링 중단
-    setMode(mode === "signup" ? "login" : "signup");
-  };
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-6 rounded-lg shadow-lg bg-white">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 p-6 rounded-lg shadow-lg bg-white"
+    >
       <input
         type="email"
         name="email"
@@ -35,7 +28,7 @@ const AuthForm = ({ mode, onSubmit, setMode }) => {
         value={formData.email}
         onChange={handleChange}
         required
-        className="w-full p-3 border-2 border-[#e08c8c] rounded-md focus:outline-none focus:ring-2 focus:ring-red-600"
+        className="w-full p-3 border-2 border-[#E08C8C] rounded-md focus:outline-none focus:ring-2 focus:ring-red-600"
       />
       <input
         type="password"
@@ -44,7 +37,7 @@ const AuthForm = ({ mode, onSubmit, setMode }) => {
         value={formData.password}
         onChange={handleChange}
         required
-        className="w-full p-3 border-2 border-[#e08c8c] rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+        className="w-full p-3 border-2 border-[#E08C8C] rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
       />
       {mode === "signup" && (
         <input
@@ -54,16 +47,9 @@ const AuthForm = ({ mode, onSubmit, setMode }) => {
           value={formData.nickname}
           onChange={handleChange}
           required
-          className="w-full p-3 border-2 border-[#e08c8c] rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+          className="w-full p-3 border-2 border-[#E08C8C] rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
         />
       )}
-      <button
-        type="button" // type을 button으로 변경
-        onClick={handleModeChange}
-        className="w-full py-3 bg-red-400 text-white font-semibold rounded-md hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500"
-      >
-        {mode === "signup" ? "로그인으로 전환" : "회원가입으로 전환"}
-      </button>
       <button
         type="submit"
         className="w-full py-3 bg-red-400 text-white font-semibold rounded-md hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500"
@@ -73,5 +59,4 @@ const AuthForm = ({ mode, onSubmit, setMode }) => {
     </form>
   );
 };
-
 export default AuthForm;
