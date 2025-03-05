@@ -59,7 +59,7 @@ const CompNavBar = ({ currentLocation }) => {
   return (
     <header className="bg-white shadow-md py-4 px-6 flex justify-between items-center relative z-50">
       {/* 로고 (메인 페이지 이동) */}
-      <Link to="/">
+      <Link to="/mainpage">
         <img src="/logo.png" alt="로고" className="w-20 h-auto" />
       </Link>
 
