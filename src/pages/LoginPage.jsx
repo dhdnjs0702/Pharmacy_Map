@@ -28,7 +28,12 @@ const LoginPage = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 space-y-6">
       <h1 className="text-2xl font-semibold">로그인</h1>
       <AuthForm mode={"login"} onSubmit={loginHandler} />
-      <Link to={"/signup"}>회원가입하기</Link>
+      <Link
+        to={"/signup"}
+        className="py-3 bg-red-400 text-white font-semibold rounded-md hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500"
+      >
+        회원가입하기
+      </Link>
     </div>
   );
 };
