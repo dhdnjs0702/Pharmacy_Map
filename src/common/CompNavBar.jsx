@@ -91,7 +91,6 @@ const CompNavBar = ({ currentLocation }) => {
               마이페이지
             </button>
 
-            {/* 드롭다운 메뉴 - 버튼 아래 표시 */}
             {dropdownOpen && (
               <div className="absolute left-0 top-full mt-1 w-32 bg-white shadow-md rounded-md border border-gray-300 z-50">
                 <Link to="/mypage">
@@ -99,20 +98,9 @@ const CompNavBar = ({ currentLocation }) => {
                     마이페이지
                   </button>
                 </Link>
-                <Link to="/review">
-                  <button className="block w-full text-left px-4 py-2 hover:bg-gray-200 transition duration-200">
-                    리뷰
-                  </button>
-                </Link>
-                <Link to="/bookmark">
-                  <button className="block w-full text-left px-4 py-2 hover:bg-gray-200 transition duration-200">
-                    북마크
-                  </button>
-                </Link>
               </div>
             )}
 
-            {/* 로그아웃 버튼 */}
             <button
               className="bg-gray-200 px-4 py-2 w-32 rounded-md hover:bg-gray-300 transition duration-200"
               onClick={handleLogout}
