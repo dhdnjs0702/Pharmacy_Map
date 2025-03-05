@@ -140,7 +140,7 @@
 
 - #### 페이지 단위 작업 관리
   - [각 페이지별 이슈](https://github.com/dhdnjs0702/Pharmacy_Map/issues) 생성
-  - 페이지별 feature 브랜치 운영 (`feature/search`, `feature/detail`)
+  - 페이지별 feature 브랜치 운영 (`feat/search`, `feat/detail`)
 - #### [Pull Request 템플릿을 활용한 코드 리뷰](https://github.com/dhdnjs0702/Pharmacy_Map/pull/1)
 
 <br><br>
