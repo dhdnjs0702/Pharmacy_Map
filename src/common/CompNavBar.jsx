@@ -29,7 +29,13 @@ const CompNavBar = ({ currentLocation }) => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (!session) {
-        Swal.fire("세션이 만료 되었습니다. 다시 로그인 해주세요.");
+        Swal.fire({
+          title: "앗!",
+          text: "성공적으로 로그아웃되었습니다.",
+          icon: "warning",
+          confirmButtonText: "확인",
+          confirmButtonColor: "#3085D6",
+        });
         navigate("/");
       }
     });

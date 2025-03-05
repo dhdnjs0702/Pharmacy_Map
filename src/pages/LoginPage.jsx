@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import AuthForm from "../components/login/AuthForm";
 import supabase from "../supabase/client";
+import Swal from "sweetalert2";
 const LoginPage = () => {
   const navigate = useNavigate();
   const loginHandler = async (formData) => {
@@ -11,10 +12,16 @@ const LoginPage = () => {
         password: password.trim(),
       });
       if (error) throw error;
-      alert("로그인 성공!");
+      console.log("error in loginpage=>", error);
       navigate("/mainpage");
     } catch (err) {
-      alert("로그인 실패: " + err.message);
+      Swal.fire({
+        title: "앗!",
+        text: "로그인 실패: " + err.message,
+        icon: "warning",
+        confirmButtonText: "확인",
+        confirmButtonColor: "#3085d6",
+      });
     }
   };
   return (

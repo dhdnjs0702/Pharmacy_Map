@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Swal from "sweetalert2";
 const AuthForm = ({ mode, onSubmit }) => {
   const [formData, setFormData] = useState({
     email: "",
@@ -11,11 +12,19 @@ const AuthForm = ({ mode, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.password.length < 6) {
-      alert("비밀번호는 6자 이상이어야 합니다.");
+      Swal.fire({
+        title: "앗!",
+        text: " 비밀번호는 6자 이상이어야 합니다.",
+        icon: "warning",
+        confirmButtonText: "확인",
+        confirmButtonColor: "#3085d6",
+      });
+
       return;
     }
     onSubmit(formData);
   };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -59,4 +68,5 @@ const AuthForm = ({ mode, onSubmit }) => {
     </form>
   );
 };
+
 export default AuthForm;

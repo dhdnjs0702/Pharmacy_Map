@@ -10,7 +10,7 @@ const MainPage = () => {
   const navigate = useNavigate(); // 페이지 이동 함수
   const { keyword, setKeyword } = useKakaoStore();
   const { error, searchPharmacies } = useKakaoSearch();
-  const [ currentLocation, setCurrentLocation ] = useState(); 
+  const [currentLocation, setCurrentLocation] = useState();
   const [user, setUser] = useState(null); //  로그인된 사용자 상태 추가
 
   //  로그인 여부 확인
@@ -101,7 +101,7 @@ const MainPage = () => {
     } catch (err) {
       Swal.fire({
         title: "에러",
-        text: "검색 중 문제가 발생했습니다. 다시 시도해주세요.",
+        text: "검색 중 문제가 발생했습니다. 다시 시도해주세요." + err,
         icon: "error",
         confirmButtonText: "확인",
         confirmButtonColor: "#3085D6",
@@ -124,7 +124,7 @@ const MainPage = () => {
   return (
     <div className="min-h-screen bg-gray-300 flex flex-col">
       {/* 헤더 */}
-      <CompNavBar currentLocation = {currentLocation}/>
+      <CompNavBar currentLocation={currentLocation} />
 
       {/* 메인 컨텐츠 - 중앙 정렬 */}
       <div className="flex flex-col items-center justify-center flex-grow">

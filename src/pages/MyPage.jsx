@@ -25,7 +25,6 @@ const MyPage = () => {
           if (error) {
             console.log("users table error => ", error);
           } else if (userData) {
-            console.log("Full User Data => ", userData);
             setUser(userData);
 
             // 사용자 데이터를 가져온 후 댓글과 북마크 가져오기
@@ -48,7 +47,6 @@ const MyPage = () => {
         if (error) {
           console.log("comments error => ", error);
         } else {
-          console.log("comments => ", comments);
           setComments(comments);
         }
       }
@@ -89,7 +87,6 @@ const MyPage = () => {
           };
         });
 
-        console.log("bookmarks => ", mergedBookmarks);
         setBookmarks(mergedBookmarks);
       }
     };
