@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="200" height="200" alt="프로젝트 로고" src="/logo.png" />
+  <img width="200" height="200" alt="프로젝트 로고" src="./public/logo.png" />
 </div>
 
 <br>
@@ -16,8 +16,7 @@
 - 신속한 치료와 건강 관리 지원을 위한 정보 접근성 향상
 
 > - **작업 기간** : 2025. 02. 26 ~ 2025. 03. 05
-> - **배포 주소** : https://pharmacy-map-pi.vercel.app/
-
+> - **배포 주소** : https://pharmacy-map-eight.vercel.app/
 <br />
 
 ## 👩‍👩‍👧‍👧 프로젝트 멤버 소개
@@ -130,7 +129,7 @@
     <tr>
       </td>
       <td width="900" align="center">
-        <img src="figma.JPG" />
+        <img src="./src/assets/figma.JPG" />
       </td>     
     </tr>
   </tbody>
